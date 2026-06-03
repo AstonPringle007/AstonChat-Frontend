@@ -1,0 +1,452 @@
+<div class="chat-container">
+  <div class="chat-header p-2 background-radial-gradient-light">
+    <img src="/assets/IZ-logo.png" alt="Logo" class="logo" />
+
+    <!-- Search bar -->
+    <div style="font-weight: 600 !important;">
+      <div style="font-size: 1.25rem;">Zestchat</div>
+    </div>
+    <div class="search-pop-container">
+
+      <div class="search-container">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" placeholder="Search" [(ngModel)]="searchTextHeader" (focus)="openDropdown()"
+          (blur)="closeDropdown()" (input)="usersHeaderList($event)" />
+      </div>
+
+      <!-- Popup -->
+      <div class="search-popup" *ngIf="showHeaderDropdown">
+
+
+        <div class="find-in-chat">
+          <mat-icon class="find-icon">search</mat-icon>
+          Find in this chat
+        </div>
+
+
+        <div class="popup-section-initial">
+          <div class="section-title">People</div>
+          <div class="people-list">
+            <div *ngFor="let user of users | slice:0:5" class="person-card"
+              (mousedown)="selectUser(user.userId, user.productId, user.profileURL)">
+
+
+              <ng-container *ngIf="user?.imageUrl; else initialsAvatar">
+                <img [src]="user.imageUrl" alt="{{ user.firstName }} {{ user.lastName }}" class="avatar" />
+              </ng-container>
+              <ng-template #initialsAvatar>
+                <div class="avatar initials-avatar">
+                  {{ user.firstName?.charAt(0).toUpperCase() }}{{ user.lastName?.charAt(0).toUpperCase() }}
+                </div>
+              </ng-template>
+              <div class="person-name">{{ user.firstName }} {{ user.lastName }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-popup" *ngIf="showHeader2Dropdown">
+        <div class="popup-section">
+          <div class="section-title">People</div>
+
+          <div *ngFor="let user of userHeaderList"
+            (mousedown)="selectUser(user.userId, user.productId, user.profileURL)"
+            [class.selected]="user.userId === selectedUserId" class="user-item">
+            <ng-container *ngIf="user?.imageUrl; else initialsAvatar">
+              <img [src]="user.imageUrl" alt="{{ user.firstName }} {{ user.lastName }}" class="avatar" />
+            </ng-container>
+
+            <!-- Fallback initials avatar -->
+            <ng-template #initialsAvatar>
+              <div class="avatar initials-avatar">
+                {{ user?.profileAlt }}
+              </div>
+            </ng-template>
+            <div class="user-info">
+              <div class="username">{{ user.firstName }} {{ user.lastName }}</div>
+              <div class="productId">{{ user.productId }}</div>
+              <div class="typing-indicator" *ngIf="isReceiverTyping && typingUser==user.username">
+                {{ typingUser }} is typing...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- <div><h3 style="min-width: 100px;">{{userName.length}}</h3></div> -->
+    <div>
+  <div style="min-width: 120px;font-size: 1.17em;" [title]="userName">
+    {{ userName.length > 12 ? (userName.substring(0, 9) + '...') : userName }}
+  </div>
+</div>
+
+    <div class="profile" (click)="toggleProfilePopup($event)">
+      <ng-container *ngIf="profileImage; else headerAvatar">
+        <img [src]="profileImage || '/assets/default-avatar.png'" alt="" class="header-image" />
+      </ng-container>
+      <ng-template #headerAvatar>
+        <div class="avatar initials-avatar">
+          {{ profileAlt }}
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Profile popup -->
+    <div class="profile-popup" *ngIf="isProfileOpen" #popupRef>
+      <div class="popup-header">
+        <span class="popup-title">{{ productId | uppercase }}</span>
+        <button class="signout-btn" (click)="logout()">Sign out</button>
+      </div>
+
+      <div class="popup-body">
+        <div>
+          <mat-label class="uploader" ondragover="return false;"
+            [style.outlineColor]="dragging ? activeColor : baseColor" (dragenter)="handleDragEnter()"
+            (drop)="handleDrop($event)">
+            <i class="icon icon-upload" [style.color]="dragging ? overlayColor : baseColor"></i>
+            <ng-container *ngIf="profileImage; else headerAvatarPop">
+              <img [src]="profileImage || '/assets/default-avatar.png'" (load)="handleImageLoad()"
+                [class.loaded]="imageLoaded" class="popup-avatar" />
+            </ng-container>
+            <ng-template #headerAvatarPop>
+              <div class="avatar initials-avatar">
+                {{ profileAlt }}
+              </div>
+            </ng-template>
+          </mat-label>
+          <input type="file" name="file" accept="image/*" (change)="handleInputChange($event)" class="upload-btn" />
+        </div>
+        <div class="popup-info">
+          <strong>{{userName}}</strong>
+          <small>{{ emailId }}</small>
+        </div>
+      </div>
+
+      <div class="popup-footer">
+        <a>View account</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-body">
+  <div class="users-list">
+  <div class="sticky-header">
+    <!-- Search Box -->
+    <div class="users-search">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" placeholder="Filter by name" [(ngModel)]="searchText" (keyup)="onSearch()" />
+    </div>
+  </div>
+
+  <!-- Expansion Panels -->
+ <mat-accordion multi>
+
+  <!-- Chats Panel -->
+  <mat-expansion-panel [expanded]="activeListTab === 'chats'" (opened)="activeListTab = 'chats'">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Chats</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div *ngFor="let user of visibleUsers"
+         (click)="selectUser(user.userId, user.productId, user.profileURL)"
+         [class.selected]="user.userId === selectedUserId"
+         class="user-item mt-1">
+
+      <ng-container *ngIf="user?.imageUrl; else initialsAvatar">
+        <img [src]="user.imageUrl" alt="{{ user.firstName }} {{ user.lastName }}" class="avatar" />
+      </ng-container>
+
+      <!-- Fallback initials avatar -->
+      <ng-template #initialsAvatar>
+        <div class="avatar initials-avatar">
+          {{ user?.profileAlt }}
+        </div>
+      </ng-template>
+
+      <div class="user-info">
+        <div class="username">{{ user.firstName }} {{ user.lastName }}</div>
+        <div class="productId">{{ user.productId }}</div>
+        <div class="typing-indicator" *ngIf="isReceiverTyping && typingUser==user.username">
+          {{ typingUser }} is typing...
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="visibleUsers.length < users.length" class="see-more" (click)="seeMore()">
+      See more
+    </div>
+  </mat-expansion-panel>
+
+  <!-- Channels Panel ✅ Now inside the accordion -->
+  <mat-expansion-panel [expanded]="activeListTab === 'channels'" (opened)="activeListTab = 'channels'"
+  (click)="onChannelList('channels')">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Channels</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div *ngFor="let channel of channelsList" class="user-item mt-1"
+         (click)="selectChannels(channel)"
+         [class.selected]="channel.groupId === selectedGroupId">
+      {{ channel.groupName }}
+    </div>
+
+    <div class="see-more" (click)="onViewChannel()">
+      Create new Group
+    </div>
+  </mat-expansion-panel>
+
+</mat-accordion>
+
+</div>
+
+
+    <!-- Selected user header -->
+    <div class="" style="width: 100% !important;background-color: #475a6b !important;">
+      <div class="selected-user-header" *ngIf="selectedUser && !isUserChannel && !isGroupChannel">
+        <ng-container *ngIf="showProfileImg; else chatAvatar">
+          <img [src]="showProfileImg ? selectedProfileUrl : '/assets/default-avatar.png'" alt="" />
+        </ng-container>
+        <ng-template #chatAvatar>
+          <div class="avatar initials-avatar">
+            {{ selectedUserProfileAlt }}
+          </div>
+        </ng-template>
+        <div class="user-details">
+          <div class="username-tabs">
+            <span class="username" style="font-size: 15px !important;">{{ selectedUserName }}</span>
+            <div class="tabs">
+              <span [class.active]="activeTab === 'chat'" (click)="activeTab = 'chat'">Chat</span>
+              <span [class.active]="activeTab === 'shared'" (click)="onFileList()">Files</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="selected-user-header" *ngIf="isUserChannel">
+        <span class="username rem-1-1">Your teams and channels</span>
+        <div class="tabs">
+            <!-- <span [class.active]="activeTab === 'izChannel'" (click)="activeTab = 'izChannel'">IZ Chat</span> -->
+        </div>
+        <button class="tab-list d-flex-align margin-left-auto"  (click)="openCreateTeamDialog()"
+         *ngIf="isAdmin">
+            <div>Create Teams</div>
+            <div style="padding-left: 5px;"><mat-icon>groups</mat-icon></div>
+        </button>
+      </div>
+      <div class="selected-user-header" *ngIf="isGroupChannel">
+        <div class="align-all-one">
+        <div >
+          <mat-label class="uploader" ondragover="return false;"
+            [style.outlineColor]="dragging ? activeColor : baseColor" (dragenter)="handleDragEnter1()"
+            (drop)="handleDrop1($event)">
+            <i class="icon icon-upload" [style.color]="dragging ? overlayColor : baseColor"></i>
+            <ng-container *ngIf="profileImage; else headerAvatarPop">
+              <img [src]="profileImage || '/assets/default-avatar.png'" (load)="handleImageLoad1()"
+                [class.loaded]="imageLoaded" class="popup-avatar" (click)="onGroupImageClick()"/>
+            </ng-container>
+            <ng-template #headerAvatarPop>
+              <div class="avatar initials-avatar">
+                {{ profileAlt }}
+              </div>
+            </ng-template>
+          </mat-label>
+          <span *ngIf="imageLoadGroupTrue">
+              <input type="file" name="file" accept="image/*" (change)="handleInputChange1($event)" class="upload-btn" />
+          </span>
+        </div>
+        <div class="username rem-1-1">{{selectedGroupName}}</div>
+          <button mat-icon-button matTooltip="Edit" (click)="onEditGroupProfile($event)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <div class="tabs">
+            <!-- <span [class.active]="activeTab === 'izChannel'" (click)="activeTab = 'izChannel'">IZ Chat</span> -->
+        </div>
+        <!-- <button mat-stroked-button color="primary" style="margin-left: auto;" (click)="openAddMembersDialog()">
+           <mat-icon>group_add</mat-icon>Add Members
+        </button> -->
+   <button
+  #addMembersBtn="matButton"
+  mat-stroked-button
+  color="primary"
+  style="margin-left: auto;"
+  (click)="openAddMembersDialog(addMembersBtn._elementRef.nativeElement)" matTooltip="Add Members">
+  <mat-icon>group_add</mat-icon>
+  {{channelsListLength}}
+</button>
+
+        </div>
+      </div>
+
+      <!-- Chat Tab -->
+      <div *ngIf="activeTab === 'chat'">
+        <div #chatContainer class="chat-messages">
+          <div *ngFor="let msg of messages" class="chat-message" [ngClass]="{ self: msg?.senderId === userId }">
+            <div class="message-meta">
+              <strong>
+                <span *ngIf="msg?.senderId !== userId">{{ msg?.senderName }}</span> 
+                <span>{{ msg?.sentAt | date : "shortTime" }}</span>
+              </strong>
+            </div>
+            <div class="message-body" [ngClass]="{ 'styled-message-body': hasTextAndAttachment(msg) }">
+              <div class="message-content" *ngIf="msg?.messageText" [innerHTML]="sanitizeMessage(msg?.messageText)">
+              </div>
+              <div class="attachments-preview" *ngIf="msg?.chatMessageFiles?.length > 0">
+                <div *ngFor="let att of msg.chatMessageFiles" class="attachment-item">
+                  <div class="file-icon">
+                    <img *ngIf="att.fileType === 'excel'" src="/assets/xlsx image.png" alt="file" />
+                    <img *ngIf="att.fileType === 'word'" src="/assets/word-icon.png" alt="file" />
+                    <img *ngIf="att.fileType === 'textFile'" src="/assets/textfile.png" alt="file" />
+                    <img *ngIf="att.fileType === 'pdf'" src="/assets/pdf-file.png" alt="file" />
+                    <img *ngIf="att.fileType === 'image'" src="/assets/default-avatar.png" alt="file" />
+                  </div>
+                  <div class="file-info">
+                    <div class="file-name" (click)="downloadDocument(att)">{{ att.fileName }}</div>
+                    <div class="file-access">Anyone with the link can download</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="typing-indicator" *ngIf="isReceiverSelectedUser">
+            {{ typingUser }} is typing...
+          </div>
+        </div>
+
+        <!-- Sticks at the bottom -->
+        <div class="chat-container-bottom">
+          <div class="error-box" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+
+          <div class="chat-input" [ngClass]="{
+       'column-layout':  attachments.length > 0 || showFormatting,
+       'row-layout': ( attachments.length === 0) && !showFormatting
+     }">
+            <p-editor [style]="{hieght:'320px',width:'100%'}" *ngIf="!showFormatting" class="view-only-editor"
+              [(ngModel)]="message" placeholder="Type your message..." (keyup.enter)="sendMessage()"
+              (input)="onTyping()">
+            </p-editor>
+
+            <div *ngIf="showFormatting" class="rich-editor">
+              <p-editor [style]="{hieght:'320px',width:'100%'}" [(ngModel)]="message" placeholder="Type your message..."
+                (keyup.enter)="sendMessage()" (input)="onTyping()">
+                <ng-template pTemplate="header">
+                  <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                  </span>
+                  <span class="ql-formats">
+                    <button class="ql-list" value="ordered"></button>
+                    <button class="ql-list" value="bullet"></button>
+                  </span>
+                  <span class="ql-formats">
+                    <button class="ql-link"></button>
+                    <button class="ql-image"></button>
+                    <button class="ql-code-block"></button>
+                  </span>
+                </ng-template>
+              </p-editor>
+              <button class="editor-delete-btn" (click)="message = ''" matTooltip="Clear Message">
+                <mat-icon (click)="toggleFormatting()" class="delete-font">delete</mat-icon>
+              </button>
+            </div>
+            <div class="attachments-preview" *ngIf="attachments.length > 0">
+              <div *ngFor="let att of attachments; let i = index" class="attachment-item">
+                <div class="file-icon">
+                  <img *ngIf="att.fileType === 'excel'" src="/assets/xlsx image.png" alt="file" />
+                  <img *ngIf="att.fileType === 'word'" src="/assets/word-icon.png" alt="file" />
+                  <img *ngIf="att.fileType === 'textFile'" src="/assets/textfile.png" alt="file"
+                    style="color: aliceblue;" />
+                  <img *ngIf="att.fileType === 'pdf'" src="/assets/pdf-file.png" alt="file" />
+                  <img *ngIf="att.fileType === 'image'" src="/assets/default-avatar.png" alt="file" />
+                </div>
+                <div class="file-info">
+                  <div class="file-name">{{ att.fileName }}</div>
+                  <div class="file-access">Anyone with the link can download</div>
+                </div>
+                <button class="remove-btn" (click)="removeAttachment(i)">
+                  ✕
+                </button>
+              </div>
+            </div>
+            <div class="chat-actions">
+              <div class="icon-with-badge" (click)="toggleFormatting()">
+                <span class="letter">A</span>
+                <mat-icon class="edit-icon">edit</mat-icon>
+              </div>
+              <input type="file" #fileInput multiple hidden (change)="onAttachmentsSelected($event)" />
+              <mat-icon class="attach-icon" (click)="fileInput.click()">attach_file</mat-icon>
+
+              <div class="icon-divider"></div>
+              <mat-icon class="send-icon" (click)="sendMessage()">send</mat-icon>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div *ngIf="activeTab === 'shared'" class="shared-tab">
+        <div class="shared-section">
+
+          <div class="table-container">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z2 tablePadding full-width-table">
+
+              <!-- File Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let file">
+                  <span class="file-link" (click)="downloadDocument(file)">{{ file.fileName }}</span>
+                </td>
+              </ng-container>
+
+              <!-- Date Column -->
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Date Shared</th>
+                <td mat-cell *matCellDef="let file"> {{ file.uploadedAt | date:'short' }} </td>
+              </ng-container>
+
+              <!-- Shared By Column -->
+              <ng-container matColumnDef="sharedBy">
+                <th mat-header-cell *matHeaderCellDef> Shared By </th>
+                <td mat-cell *matCellDef="let file"> {{ file.uploadedBy }} </td>
+              </ng-container>
+
+
+              <!-- Header & Row Definitions -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [length]="totalItems" [pageSize]="pageSizeFiles" [pageSizeOptions]="[5, 10, 25, 50]"
+              (page)="onPageChange($event)">
+            </mat-paginator>
+
+          </div>
+
+          <ng-template #noFiles>
+            <p>No files shared yet.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="align-center radiant-color" style="font-size: 12px;padding: 4px;">
+    <strong>Zestchat</strong> 1.0.0 Intelizest Consulting © 2025. All Right Reserved.
+  </div>
+</div>
+
+<ng-template #groupProfileRef>
+  <div class="dialog-container p-4">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Group Name</mat-label>
+      <input matInput [(ngModel)]="groupRename" placeholder="Enter group name" />
+    </mat-form-field>
+
+    <div class="dialog-actions">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-flat-button mat-dialog-close color="primary" (click)="saveGroup()">Save</button>
+    </div>
+  </div>
+</ng-template>

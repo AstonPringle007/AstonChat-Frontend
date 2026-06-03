@@ -1,0 +1,65 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #bbb;
+  margin-bottom: 8px;
+
+  a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.team-type {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+}
+
+.help-link {
+  font-size: 13px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+mat-dialog-actions {
+  margin-top: 12px;
+
+  button:first-child {
+    margin-right: 8px;
+  }
+}
+
+/* Match dark mode like screenshot */
+.create-team-dialog-container .mat-mdc-dialog-container {
+  background: #1e1e1e;
+  color: #fff;
+  border-radius: 8px;
+}
+
+::ng-deep.mat-mdc-text-field-wrapper {
+    height: 40px;
+}
+
+
+.dialog-actions {
+  display: flex;
+  justify-content: center; /* centers both buttons horizontally */
+  gap: 1rem; /* adds spacing between buttons */
+  margin-top: 1rem; /* small space above buttons */
+}

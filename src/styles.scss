@@ -1,0 +1,128 @@
+@use 'ngx-toastr/toastr';
+@import url("https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+@font-face {
+  font-family: "Prompt" !important;
+  src: url(assets/font/Prompt/Prompt-Regular.ttf);
+}
+:root{
+  background: #1b1d21 !important;
+}
+
+*{
+  font-family: "Prompt" !important;
+}
+
+mat-icon {
+  font-family: "Material Icons" !important;
+}
+
+body {
+  margin: 0;
+  font-family: 'Prompt';
+}
+
+.text-white {
+  color: #fff !important;
+}
+.align-center{
+  text-align: center;
+}
+
+/* Black background, white text for the editor content */
+.p-editor-container .ql-editor {
+  background-image: radial-gradient(1000px circle at 50% 50%, #374653 5%, #2e3a45 40%, #26333c 70%, #1e2b34 100%), radial-gradient(1250px circle at 0% 50%, #1e2b34 0%, transparent 70%), radial-gradient(1250px circle at 100% 50%, #1e2b34 0%, transparent 70%) !important;
+  color: white !important;
+}
+
+
+
+.ql-editor {
+  background: #2f3136 !important;
+  color: white !important;
+}
+
+.ql-toolbar {
+  background: #2f3136 !important;
+  // border-color: white !important;
+   color: white !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: none !important;
+}
+
+.ql-container.ql-snow  {
+  border: none !important;
+}
+
+.ql-toolbar button svg {
+  fill: white !important;
+  // color: #000;
+}
+.p-editor .p-editor-toolbar.ql-snow .ql-stroke {
+  stroke: white !important;
+}
+
+.ql-container {
+  border-color: white !important;
+  color: white !important;
+}
+.p-editor .ql-snow.ql-toolbar button:hover, .p-editor .ql-snow.ql-toolbar button:focus {
+ color: white !important;
+}
+.ql-editor.ql-blank::before {
+   color: white !important;
+}
+
+/* Hide the toolbar completely */
+.view-only-editor{
+   flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #2f3136;
+  border-radius: 5px;
+}
+.view-only-editor .p-editor-toolbar {
+    display: none !important;
+}
+
+/* Adjust height so it looks like normal text */
+.view-only-editor .p-editor-content {
+    border: none;
+    background: #2f3136 ;  /* black background */
+    color: white;       /* white text */
+    // padding: 10px 12px;
+}
+
+.view-only-editor .ql-container{
+   
+     border: none !important;
+}
+
+/* Ensure text inside stays white */
+.view-only-editor .p-editor-content .ql-editor .p-editor-container .ql-editor  {
+    color: white !important;
+     border: none !important;
+}
+
+
+.d-flex-align {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+}
+
+.rem-1-1 {
+  font-size: 1.1rem !important;
+}
+
+.margin-left-auto {
+  margin-left: auto;  /* Pushes button to the right */
+}
+
+.margin-auto {
+  margin: auto !important;
+}

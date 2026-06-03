@@ -1,0 +1,206 @@
+/* =========================
+   Page Layout
+========================= */
+
+.full-height-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* =========================
+   Background
+========================= */
+
+.background-radial-gradient-light {
+  // background-color: #374653;
+  // background-image:
+  //   radial-gradient(
+  //     1250px circle at 0% 0%,
+  //     #374653 15%,
+  //     #2e3a45 30%,
+  //     #26333c 50%,
+  //     #1e2b34 80%,
+  //     transparent 100%
+  //   ),
+  //   radial-gradient(
+  //     1250px circle at 100% 100%,
+  //     #374653 15%,
+  //     #2e3a45 30%,
+  //     #26333c 50%,
+  //     #1e2b34 80%,
+  //     transparent 100%
+  //   );
+}
+
+/* =========================
+   Login Card
+========================= */
+
+.bg-glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================
+   Logo Section
+========================= */
+
+.logo {
+  width: 80px;
+  height: 80px;
+}
+
+.app-title {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 700;
+  color: #374653;
+}
+
+.app-subtitle {
+  color: #666;
+  font-size: 14px;
+}
+
+.signin-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+/* =========================
+   Form
+========================= */
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.required-star {
+  color: red;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #374653;
+  box-shadow: 0 0 4px rgba(55, 70, 83, 0.3);
+}
+
+/* =========================
+   Password Field
+========================= */
+
+.password-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.password-container input {
+  margin-bottom: 0;
+  padding-right: 40px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 35%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 20px;
+}
+
+/* =========================
+   Button
+========================= */
+
+button {
+  width: 100%;
+  background: #374653;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* =========================
+   Footer
+========================= */
+
+.section-footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 15px 10px;
+  font-size: 13px;
+      border-top: 1px solid #d6c3c3;
+}
+
+.section-footer p {
+  margin: 0;
+  color: grey
+}
+
+.section-footer strong {
+  // color: #ffffff;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 576px) {
+  .login-card {
+    max-width: 100%;
+  }
+
+  .app-title {
+    font-size: 24px;
+  }
+
+  .app-subtitle {
+    font-size: 13px;
+  }
+}

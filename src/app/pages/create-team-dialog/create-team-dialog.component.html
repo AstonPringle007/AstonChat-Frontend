@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Create a team</h2>
+<mat-dialog-content class="dialog-content">
+
+  <p class="subtitle">
+    You're creating a team from scratch.
+    <!-- <a href="#">More create team options</a> -->
+  </p>
+<form [formGroup]="groupForm">
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Team name</mat-label>
+    <input matInput placeholder="Give your team a name" formControlName="groupName">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput placeholder="Let people know what this team is all about"
+    formControlName="groupDescription"></textarea>
+  </mat-form-field>
+
+  <div class="team-type">
+    <span class="label">Team type</span>
+    <button mat-stroked-button color="primary" (click)="onChoosePrivate()"
+    type="button" *ngIf="isPrivateGroup === 'private'">
+      <mat-icon>lock</mat-icon>
+      Private
+    </button>
+    <button mat-stroked-button color="primary" (click)="onChoosePrivate()"
+    type="button" *ngIf="isPrivateGroup === 'public'">
+      <mat-icon>lock_open</mat-icon>
+      Public
+    </button>
+  </div>
+
+  </form>
+
+  <a href="#" class="help-link">What's a team?</a>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close type="button">Cancel</button>
+  <button mat-flat-button mat-dialog-close color="primary" type="submit" (click)="onSubmit()">Create</button>
+</mat-dialog-actions>
+
+<ng-template #privatePublicRef>
+    <div>
+      <mat-dialog-actions class="dialog-actions">
+  <button mat-stroked-button mat-dialog-close type="button" (click)="onChoosePublic('private')">Private
+    <mat-icon>lock</mat-icon>
+  </button>
+  <button mat-stroked-button mat-dialog-close color="primary" type="submit" (click)="onChoosePublic('public')">Public
+    <mat-icon>lock_open</mat-icon>
+  </button>
+</mat-dialog-actions>
+    </div>
+</ng-template>

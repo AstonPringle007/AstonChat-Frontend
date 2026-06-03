@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  position: relative;
+}
+.bottom-right-icon {
+  position: fixed;
+  bottom: -4px;
+  padding: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.btn-whites {
+  color: white !important;
+}.btn-blacks {
+  color: black !important;
+}

@@ -1,0 +1,98 @@
+<section class="background-radial-gradient-light full-height-section">
+
+  <div class="login-wrapper">
+
+    <div class="card bg-glass login-card">
+      <div class="card-body p-4 p-md-5">
+
+        <div class="text-center mb-4">
+          <img
+            src="assets/images/AstonChatLogo.png"
+            alt="ChatConnect Logo"
+            class="logo"
+          />
+
+          <h2 class="app-title">ChatConnect</h2>
+
+          <p class="app-subtitle">
+            Smart Messaging & Collaboration Platform
+          </p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+
+          <h4 class="signin-title">Sign In</h4>
+
+          <!-- <label for="product">
+            <span class="required-star">*</span>
+            Workspace
+          </label>
+
+          <select
+            id="product"
+            formControlName="product"
+            required
+          >
+            <option
+              *ngFor="let product of productList"
+              [value]="product.value"
+            >
+              {{ product.display }}
+            </option>
+          </select> -->
+
+          <label for="username">
+            <span class="required-star">*</span>
+            Username
+          </label>
+
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            required
+          />
+
+          <label for="password">
+            <span class="required-star">*</span>
+            Password
+          </label>
+
+          <div class="password-container">
+
+            <input
+              [type]="type"
+              formControlName="password"
+              autocomplete="off"
+              (input)="onPasswordInput()"
+              required
+            />
+
+            <mat-icon
+              class="password-toggle"
+              *ngIf="showEyeIcon"
+              (click)="togglePassword()"
+            >
+              {{ type === 'password' ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+
+          </div>
+
+          <button type="submit">
+            Sign In
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="section-footer">
+    <p>
+      © 2026 <strong>ChatConnect</strong>. All Rights Reserved.
+    </p>
+  </footer>
+
+</section>

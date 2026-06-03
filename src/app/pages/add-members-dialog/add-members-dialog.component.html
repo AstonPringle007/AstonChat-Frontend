@@ -1,0 +1,21 @@
+<mat-dialog-content class="p-4">
+  <div class="flex items-center space-x-3" *ngFor="let groupMessage of groupMessages">
+    <div class="row d-flex">
+      <mat-icon>settings</mat-icon>
+      <p class="font-medium">{{groupMessage.userId}}</p>
+    </div>
+  </div>
+
+  <!-- <div class="flex items-center space-x-3 mt-3">
+    <img src="assets/other-user-avatar.png" class="rounded-full w-10 h-10" alt="Other">
+    <div>
+      <p class="font-medium">Velusami Arumugam</p>
+    </div>
+  </div> -->
+
+  <!-- <mat-divider class="my-3"></mat-divider> -->
+
+  <button mat-stroked-button class="w-full justify-start mb-2">
+    Start a group chat
+  </button>
+</mat-dialog-content>
