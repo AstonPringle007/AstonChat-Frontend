@@ -35,21 +35,21 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      product: ['', [Validators.required]]
+      // product: ['', [Validators.required]]
     });
   }
   ngOnInit(): void {
     this.authService.logout();
     this.productDropdown();
-    this.valueChange();
+    // this.valueChange();
   }
-  valueChange() {
-    this.loginForm.controls['product'].valueChanges.subscribe((val) => {
-      if (val) {
-        this.productId = val;
-      }
-    });
-  }
+  // valueChange() {
+  //   this.loginForm.controls['product'].valueChanges.subscribe((val) => {
+  //     if (val) {
+  //       this.productId = val;
+  //     }
+  //   });
+  // }
   togglePassword() {
     this.type = this.type === 'password' ? 'text' : 'password';
     this.cd.markForCheck();
@@ -80,18 +80,18 @@ export class LoginComponent implements OnInit {
   if (this.loginForm.valid) {
     const { username, password } = this.loginForm.value;
 
-    this.authService.login(username, password, this.productId).subscribe({
-      next: (success: boolean) => {
-        if (success) {
+    // this.authService.login(username, password, this.productId).subscribe({
+    //   next: (success: boolean) => {
+    //     if (success) {
           this.toastr.success('Welcome to Chat', 'Success', { timeOut: 4000 });
           this.router.navigate(['/chat']);
-        }
-      },
-      error: (error) => {
-        const msg = error.error.message || 'Invalid username or password';
-        this.toastr.error(msg, 'Attention Required', { timeOut: 4000 });
-      }
-    });
+    //     }
+    //   },
+    //   error: (error) => {
+    //     const msg = error.error.message || 'Invalid username or password';
+    //     this.toastr.error(msg, 'Attention Required', { timeOut: 4000 });
+    //   }
+    // });
 
   } else {
     this.toastr.warning("Please fill required fields");

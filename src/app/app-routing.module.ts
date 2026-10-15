@@ -13,7 +13,8 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'chat', component: ChatRoomComponent, canActivate: [AuthGuard], },
+  { path: 'chat', component: ChatRoomComponent, canActivate: [], },
+  //  { path: 'chat', component: ChatRoomComponent, canActivate: [AuthGuard], },
   { path: 'create-team-dialog', component: CreateTeamDialogComponent },
   { path: 'add-members', component: AddMembersDialogComponent },
   {
